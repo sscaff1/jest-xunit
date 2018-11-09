@@ -1,0 +1,23 @@
+{
+  "name": "jest-xunit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jest",
+    "xunit",
+    "test-processor"
+  ],
+  "author": {
+    "name": "Steven Scaffidi",
+    "email": "sscaff1@gmail.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "read-pkg": "^4.0.1",
+    "xml": "^1.0.1"
+  }
+}
