@@ -49,7 +49,6 @@ class JestXUnit {
       .map(regexGroup => {
         const { regex, name, split } = regexGroup;
         if (title.match(regex)) {
-          console.log(title);
           const value = title.replace(regex, '$1').trim();
           return {
             trait: {
