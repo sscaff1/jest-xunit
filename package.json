@@ -17,7 +17,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "read-pkg": "^4.0.1",
     "xml": "^1.0.1"
   }
 }
