@@ -15,7 +15,16 @@
     "name": "Steven Scaffidi",
     "email": "sscaff1@gmail.com"
   },
-  "license": "ISC",
+  "homepage": "https://github.com/sscaff1/jest-xunit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sscaff1/jest-xunit"
+  },
+  "bugs": {
+    "email": "sscaff1@gmail.com",
+    "url": "https://github.com/sscaff1/jest-xunit/issues"
+  },
+  "license": "MIT",
   "dependencies": {
     "xml": "^1.0.1"
   }
