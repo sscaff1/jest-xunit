@@ -4,24 +4,35 @@ const fs = require('fs');
 const path = require('path');
 const xml = require('xml');
 
+const LOCALE = 'en-US';
+
 function assemblies(children) {
   return {
     assemblies: [
       {
-        _attr: { timestamp: Date.now() }
+        _attr: { timestamp: new Date().toLocaleString(LOCALE) }
       },
       ...children
     ]
   };
 }
 
-function assembly(children) {
+function assembly({ children, total, passed, failed, skipped, time }) {
   return {
     assembly: [
       {
         _attr: {
           name: process.cwd(),
-          environment: os.platform() + os.arch()
+          environment: os.platform() + ' ' + os.arch(),
+          ['test-framework']: 'Jest',
+          ['run-date']: new Date().toLocaleDateString(LOCALE),
+          ['run-time']: new Date().toLocaleTimeString(LOCALE),
+          total,
+          passed,
+          failed,
+          skipped,
+          time,
+          errors: 0
         }
       },
       ...children
@@ -117,14 +128,29 @@ class JestXUnit {
     const outputPath = config.outputPath || process.cwd();
     const filename = config.filename || 'test-report.xml';
     this.traitsRegex = config.traitsRegex || [];
-    const data = xml([assemblies([assembly([errors(), ...results.testResults.map(this.collection)])])], {
-      indent: '\t'
-    });
+    const data = xml(
+      [
+        assemblies([
+          assembly({
+            children: [errors(), ...results.testResults.map(this.collection)],
+            total: results.numTotalTests,
+            passed: results.numPassedTests,
+            failed: results.numFailedTests,
+            skipped: results.numPendingTests,
+            time: ((Date.now() - results.startTime) / 1000).toFixed(3)
+          })
+        ])
+      ],
+      {
+        indent: '\t'
+      }
+    );
 
     if (!fs.existsSync(outputPath)) {
       mkdirp.sync(outputPath);
     }
     fs.writeFileSync(path.join(outputPath, filename), data);
+    console.log('Test results written to ' + process.cwd() + '\\test-report.xml');
   }
 }
 
