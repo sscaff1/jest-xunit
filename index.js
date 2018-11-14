@@ -6,6 +6,12 @@ const xml = require('xml');
 
 const LOCALE = 'en-US';
 
+const XUNIT_STATES = {
+  passed: 'Pass',
+  failed: 'Fail',
+  skipped: 'Skip'
+};
+
 function assemblies(children) {
   return {
     assemblies: [
@@ -85,7 +91,7 @@ class JestXUnit {
             type: result.ancestorTitles.join(' '),
             method: 'Test',
             time: 0,
-            result: result.status
+            result: XUNIT_STATES[result.status]
           }
         },
         {
