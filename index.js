@@ -23,15 +23,16 @@ function assembly({ children, total, passed, failed, skipped, time }) {
       {
         _attr: {
           name: process.cwd(),
-          environment: os.platform() + ' ' + os.arch(),
+          ['config-file']: `${process.cwd()}/jest.config.js`,
           ['test-framework']: 'Jest',
+          environment: os.platform() + ' ' + os.arch(),
           ['run-date']: new Date().toLocaleDateString(LOCALE),
           ['run-time']: new Date().toLocaleTimeString(LOCALE),
+          time,
           total,
           passed,
           failed,
           skipped,
-          time,
           errors: 0
         }
       },
@@ -47,7 +48,7 @@ function errors() {
 }
 
 class JestXUnit {
-  constructor(globalConfig, options) {
+  constructor(_globalConfig, options) {
     this.options = options;
     this.traitsRegex;
     this.trait = this.trait.bind(this);
@@ -81,9 +82,10 @@ class JestXUnit {
         {
           _attr: {
             name: result.title,
-            result: result.status,
+            type: result.ancestorTitles.join(' '),
+            method: 'Test',
             time: 0,
-            method: 'Test'
+            result: result.status
           }
         },
         {
@@ -110,12 +112,12 @@ class JestXUnit {
       collection: [
         {
           _attr: {
+            name: testFilePath,
+            time: ((end - start) / 1000).toFixed(3),
             total: numFailingTests + numPassingTests + numPendingTests,
             passed: numPassingTests,
             failed: numFailingTests,
-            skipped: numPendingTests,
-            name: testFilePath,
-            time: ((end - start) / 1000).toFixed(3)
+            skipped: numPendingTests
           }
         },
         ...result.testResults.map(this.test)
@@ -123,7 +125,7 @@ class JestXUnit {
     };
   }
 
-  onRunComplete(contexts, results) {
+  onRunComplete(_contexts, results) {
     const config = this.options || {};
     const outputPath = config.outputPath || process.cwd();
     const filename = config.filename || 'test-report.xml';
