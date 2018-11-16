@@ -3,6 +3,7 @@ const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const xml = require('xml');
+const mkdirp = require('mkdirp');
 
 const LOCALE = 'en-US';
 
