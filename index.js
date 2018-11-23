@@ -97,7 +97,7 @@ class JestXUnit {
         },
         {
           output: {
-            _cdata: result.failureMessages.join('\n')
+            _cdata: result.failureMessages.join('').replace(/[^\w\s]/gi, '')
           }
         },
         {
