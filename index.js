@@ -158,8 +158,9 @@ class JestXUnit {
     if (!fs.existsSync(outputPath)) {
       mkdirp.sync(outputPath);
     }
-    fs.writeFileSync(path.join(outputPath, filename), data);
-    console.log('Test results written to ' + process.cwd() + '\\test-report.xml');
+    const reportPath = path.join(outputPath, filename);
+    fs.writeFileSync(reportPath, data);
+    console.log('Test results written to ' + reportPath);
   }
 }
 
