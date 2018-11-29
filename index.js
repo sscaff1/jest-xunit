@@ -91,7 +91,7 @@ class JestXUnit {
             name: result.title,
             type: result.ancestorTitles.join(' '),
             method: 'Test',
-            time: result.duration,
+            time: result.duration / 1000,
             result: XUNIT_STATES[result.status]
           }
         },
